@@ -1,0 +1,74 @@
+/* Grundinställningar för hela sidan */
+body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+    background-color: rgb(87, 20, 59); /* Din snygga lila färg */
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Rubriken med din border-stil */
+h1 {
+    color: #ffffff;
+    font-size: 48px; /* Lite större för genomslag */
+    margin-bottom: 20px;
+    padding: 15px 30px;
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+    margin-top: 50px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Container för att hålla knapparna på rad */
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+/* Dina länkar/knappar */
+a {
+    color: #ffffff;
+    text-decoration: none;
+    border: #ffffff 4px solid;
+    border-radius: 10px;
+    padding: 12px 25px;
+    font-size: 24px;
+    font-weight: bold;
+    transition: all 0.3s ease; /* Gör animationen mjuk */
+}
+
+/* Effekt när man håller musen över knapparna */
+a:hover {
+    background-color: #ffffff;
+    color: rgb(87, 20, 59);
+    transform: scale(1.05);
+}
+
+/* Informationsboxen */
+.infobox {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.infobox h2 {
+    margin-top: 0;
+    color: #ff00ff; /* En neon-accent som poppar mot svart */
+}
+
+.infobox p {
+    line-height: 1.6;
+    font-size: 18px;
+    opacity: 0.9;
+}
