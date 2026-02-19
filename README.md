@@ -16,3 +16,6 @@
 │
 ├── /db
 │   └── schema.sql          # En fil där man sparar sin CREATE TABLE-kod
+
+
+Detta ska då bli en sida där man loggar in och sedan så matar man in sina subscriptions med datum etc. Därefter kan man se sin årskostnad, due dates kostnad i olika valuto etc.
