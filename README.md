@@ -18,4 +18,6 @@
 │   └── schema.sql          # En fil där man sparar sin CREATE TABLE-kod
 
 
-Detta ska då bli en sida där man loggar in och sedan så matar man in sina subscriptions med datum etc. Därefter kan man se sin årskostnad, due dates kostnad i olika valuto etc.
+Detta ska då bli en sida där man loggar in och sedan så matar man in sina subscriptions med datum etc. Därefter kan man se sin årskostnad, due dates kostnad i olika valuta etc.
+
+Valutan ska ändras eftersom, då den ska gå igenom ett api call som hämtar senaste värdet av valutan.
