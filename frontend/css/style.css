@@ -10,10 +10,10 @@ body {
     min-height: 100vh;
 }
 
-/* Rubriken med din border-stil */
+/* Rubriken */
 h1 {
     color: #ffffff;
-    font-size: 48px; /* Lite större för genomslag */
+    font-size: 48px;
     margin-bottom: 20px;
     padding: 15px 30px;
     border: 3px solid #ffffff;
@@ -23,15 +23,15 @@ h1 {
     letter-spacing: 2px;
 }
 
-/* Container för att hålla knapparna på rad */
+/* Container för knappar */
 .auth-buttons {
     display: flex;
     gap: 15px;
     margin-bottom: 40px;
 }
 
-/* Dina länkar/knappar */
-a {
+/* Länkar och knappar */
+a, input[type="submit"] {
     color: #ffffff;
     text-decoration: none;
     border: #ffffff 4px solid;
@@ -39,17 +39,19 @@ a {
     padding: 12px 25px;
     font-size: 24px;
     font-weight: bold;
-    transition: all 0.3s ease; /* Gör animationen mjuk */
+    transition: all 0.3s ease;
+    background: transparent;
+    cursor: pointer;
+    display: inline-block;
 }
 
-/* Effekt när man håller musen över knapparna */
-a:hover {
+a:hover, input[type="submit"]:hover {
     background-color: #ffffff;
     color: rgb(87, 20, 59);
     transform: scale(1.05);
 }
 
-/* Informationsboxen */
+/* Informationsboxen och Formulär-behållaren */
 .infobox {
     background-color: #000000;
     color: #ffffff;
@@ -64,11 +66,48 @@ a:hover {
 
 .infobox h2 {
     margin-top: 0;
-    color: #ff00ff; /* En neon-accent som poppar mot svart */
+    color: #ff00ff; /* Neon-accent */
 }
 
-.infobox p {
-    line-height: 1.6;
-    font-size: 18px;
-    opacity: 0.9;
+/* --- TILLÄGG FÖR PHP/FORMULÄR --- */
+
+/* Styling för input-fälten i register.php */
+input[type="email"], 
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border-radius: 8px;
+    border: 2px solid #ff00ff;
+    background-color: #1a1a1a;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box; /* Ser till att padding inte förstör bredden */
+}
+
+input:focus {
+    outline: none;
+    border-color: #ffffff;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+/* Styling för felmeddelanden från PHP */
+.error-msg {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: #ff4d4d;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ff4d4d;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Styling för framgångsmeddelanden */
+.success-msg {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #00ff00;
+    margin-bottom: 20px;
 }

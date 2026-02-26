@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1:3306
--- Tid vid skapande: 19 feb 2026 kl 09:44
+-- Tid vid skapande: 19 feb 2026 kl 09:48
 -- Serverversion: 11.8.3-MariaDB-log
 -- PHP-version: 7.2.34
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 
 --
 -- Databas: `u372617156_SubSlayer`
+
+Create database if not exists 'SubSlayer' default character set utf8mb4 collate utf8mb4_unicode_ci;
 --
 
 -- --------------------------------------------------------
