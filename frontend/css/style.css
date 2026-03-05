@@ -1,3 +1,5 @@
+/* CSS:N ÄR BARA AI-GENERERAD
+
 /* Grundinställningar för hela sidan */
 body {
     align-items: center;
@@ -85,7 +87,7 @@ input[type="password"] {
     box-sizing: border-box; /* Ser till att padding inte förstör bredden */
 }
 
-input:focus {
+input:focus, select:focus {
     outline: none;
     border-color: #ffffff;
     box-shadow: 0 0 10px #ff00ff;
@@ -110,4 +112,143 @@ input:focus {
     border-radius: 5px;
     border: 1px solid #00ff00;
     margin-bottom: 20px;
+}
+
+/* --- FORMULÄR: text, number, date, select --- */
+
+label {
+    display: block;
+    text-align: left;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 12px;
+    margin: 0 0 20px 0;
+    border-radius: 8px;
+    border: 2px solid #ff00ff;
+    background-color: #1a1a1a;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* --- WIDER BOX för prenumerationslistan --- */
+
+.wide-box {
+    max-width: 900px;
+}
+
+/* --- LISTANS HEADER MED VALUTAVÄLJARE --- */
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.list-header h2 {
+    margin: 0;
+}
+
+.currency-switcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.currency-switcher label {
+    display: inline;
+    margin: 0;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+select.select-inline {
+    width: auto;
+    padding: 7px 10px;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* --- KONVERTERAT BELOPP I TABELL --- */
+
+.converted-amount {
+    color: #ff00ff;
+    font-weight: bold;
+}
+
+.same-currency {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- PRENUMERATIONSTABELL --- */
+
+.sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.sub-table th,
+.sub-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 15px;
+}
+
+.sub-table th {
+    color: #ff00ff;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sub-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* --- RADERA-KNAPP --- */
+
+.delete-btn {
+    background: transparent;
+    border: 2px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    background-color: #ff4d4d;
+    color: white;
+    transform: none;
+}
+
+/* --- TOTAL ÅRSKOSTNAD --- */
+
+.total-label {
+    font-size: 18px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: right;
+}
+
+.total-label span {
+    color: #ff00ff;
+    font-weight: bold;
 }

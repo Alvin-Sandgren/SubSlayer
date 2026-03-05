@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Inkludera databasanslutningen
 require 'db.php'; 
 
@@ -21,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         try {
             if ($stmt->execute()) {
-                // Skicka användaren till login med ett lyckat meddelande
-                header("Location: subslayer.php?");
+                $_SESSION['user_id'] = $conn->insert_id;
+                $_SESSION['email'] = $email;
+                header("Location: subslayer.php");
                 exit;
             }
         } catch (mysqli_sql_exception $e) {
@@ -68,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
 
         <p>Har du redan ett konto?</p>
-        <a href="login.php" style="font-size: 18px; padding: 8px 15px;">Logga in här</a>
+        <a href="login.php">Logga in här</a>
     </div>
     
 </body>
