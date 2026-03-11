@@ -51,7 +51,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="list-header">
             <h2>Mina prenumerationer</h2>
             <div class="currency-switcher">
-                <label for="displayCurrency">Visa i:</label>
+                <label for="displayCurrency">Visa i :</label>
                 <select id="displayCurrency" class="select-inline"></select>
             </div>
         </div>

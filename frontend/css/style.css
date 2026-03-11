@@ -29,6 +29,7 @@ h1 {
 .auth-buttons {
     display: flex;
     gap: 15px;
+    margin-top: 15px;
     margin-bottom: 40px;
 }
 
@@ -54,7 +55,7 @@ a:hover, input[type="submit"]:hover {
 }
 
 /* Informationsboxen och Formulär-behållaren */
-.infobox {
+.infobox{
     background-color: #000000;
     color: #ffffff;
     padding: 30px;
@@ -143,6 +144,7 @@ select {
 
 .wide-box {
     max-width: 900px;
+    margin-top: 20px;
 }
 
 /* --- LISTANS HEADER MED VALUTAVÄLJARE --- */
