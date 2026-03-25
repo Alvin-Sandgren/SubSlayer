@@ -62,6 +62,8 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    <br><br><br>
+
     <div class="infobox">
         <h2>Kostnadsfördelning per tjänst</h2>
         <?php include 'chart.php'; ?>
