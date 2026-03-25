@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -61,10 +62,15 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    <div class="infobox">
+        <h2>Kostnadsfördelning per tjänst</h2>
+        <?php include 'chart.php'; ?>
+    </div>
+
     <div class="auth-buttons">
         <a href="../index.html">Startsida</a>
         <a href="logout.php">Logga ut</a>
-    </div>
+    </div>  
 
     <script src="../frontend/js/script.js"></script>
 </body>
