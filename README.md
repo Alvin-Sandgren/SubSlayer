@@ -1,12 +1,9 @@
 # SubSlayer
 
-SubSlayer är en enkel PHP/JavaScript-applikation för att hantera prenumerationer. 
+SubSlayer är en PHP/JavaScript-applikation för att hantera prenumerationer.
 Användare kan registrera sig, logga in och lägga till prenumerationer med kostnad,
 valuta, betalningsperiod och nästa förfallodatum. Systemet beräknar årskostnad
-och kan konvertera mellan valutor med hjälp av Frankfurter API. 
-
-#Nya features
-Chartmaker: Här görs en cirkeldiagram utifrån dina aktuella prenumerationer och visar i delar vad som kostar mest, minst etc.
+och kan konvertera mellan valutor med hjälp av Frankfurter API.
 
 ## Filstruktur
 
@@ -14,46 +11,56 @@ Chartmaker: Här görs en cirkeldiagram utifrån dina aktuella prenumerationer o
 ├── index.html              # Startsida med länkar för inloggning/registrering
 ├── README.md               # Denna fil
 ├── backend/
-│   ├── db.php              # Databas­anslutning (mysqli)
-│   ├── api.php             # REST‑liknande API för prenumerationer (GET/POST/DELETE)
+│   ├── db.php              # Databasanslutning (mysqli)
+│   ├── api.php             # REST-liknande API för prenumerationer (GET/POST/PUT/DELETE)
+│   ├── salary.php          # API för att hämta och uppdatera månadslön (GET/PUT)
 │   ├── login.php           # Inloggningsformulär och sessionhantering
 │   ├── register.php        # Registreringsformulär för nya användare
 │   ├── logout.php          # Avslutar sessionen och återvänder till startsidan
-│   └── subslayer.php       # Huvudsida efter inloggning med formulär + lista
+│   ├── subslayer.php       # Huvudsida efter inloggning med formulär + lista
+│   └── chart.php           # Cirkeldiagram över kostnadsfördelning per tjänst
 ├── frontend/
 │   ├── css/
-│   │   └── style.css       # All design/layoutrutiner
+│   │   └── style.css       # All design och layout
 │   └── js/
-│       └── script.js       # JS som pratar med api.php, hämtar växelkurs och uppdaterar DOM
+│       ├── main.js         # Init, eventlyssnare och övergripande logik
+│       ├── api.js          # Alla fetch-anrop mot backend
+│       ├── currencies.js   # Valutahämtning, kurser och konvertering
+│       ├── render.js       # Renderingsfunktioner för tabell, redigering och diagram
+│       └── salary.js       # Lönehämtning, sparning och visning
 └── db/
     └── subslayer.sql       # Databasschema (tabeller för users + subscriptions)
 
 ## Funktionalitet
 
 1. **Autentisering**
-   - Användare registrerar sig via `backend/register.php` (e‑post & lösenord).
-   - Inloggning sker på `backend/login.php`. Lösenord hash‑as med `password_hash`.
+   - Användare registrerar sig via `backend/register.php` (e-post och lösenord).
+   - Inloggning sker på `backend/login.php`. Lösenord hashas med `password_hash`.
    - Inloggade användare skickas till `backend/subslayer.php`. Utloggning via `backend/logout.php`.
 
 2. **Prenumerations-API**
    - `backend/api.php` kontrollerar sessionen och ger JSON-svar.
-   - `GET` returnerar användarens prenumerationer.
+   - `GET` returnerar användarens prenumerationer sorterade på förfallodatum.
    - `POST` lägger till en ny prenumeration.
+   - `PUT` uppdaterar kostnad och valuta för en befintlig prenumeration.
    - `DELETE` tar bort en prenumeration om den tillhör användaren.
 
-3. **Frontend**
-   - `frontend/js/script.js` hanterar API-anrop, renderar tabellen och konverterar valutor.
-   - Valutakurser hämtas från `https://api.frankfurter.dev`.
-   - `frontend/css/style.css` innehåller stilmallar för formulär och listor.
+3. **Lön**
+   - `backend/salary.php` hanterar läsning och uppdatering av månadslön.
+   - Lönen sparas per användare i databasen och är tillgänglig efter inloggning.
+   - Används för att beräkna hur stor andel av lönen som går till prenumerationer.
 
-4. **Databas**
-   - `db/subslayer.sql` innehåller struktur för tabeller `users` och `subscriptions`.
-   - Krav: MySQL/MariaDB med UTF8‑support.
+4. **Frontend**
+   - JS är uppdelat i moduler: `main.js`, `api.js`, `currencies.js`, `render.js` och `salary.js`.
+   - Valutakurser hämtas från `https://api.frankfurter.dev` med SEK som bas.
+   - Prenumerationer kan redigeras direkt i tabellen (kostnad och valuta).
+   - Nästa tre förfallodatum visas med antal dagar kvar.
+   - Pajdiagram visar hur stor andel av årslönen som går till prenumerationer.
+   - Cirkeldiagram via `chart.php` visar kostnadsfördelning per tjänst.
 
-> **OBS:** index.html länkar till inloggning/registrering; allt annat ligger i `backend/` och `frontend/`.
+5. **Databas**
+   - `db/subslayer.sql` innehåller struktur för tabellerna `users` och `subscriptions`.
+   - `users`-tabellen innehåller kolumnen `monthly_salary` för sparad månadslön.
+   - Krav: MySQL/MariaDB med UTF8-support.
 
-## Utveckling
-
-Detta ska då bli en sida där man loggar in och sedan så matar man in sina subscriptions med datum etc. Därefter kan man se sin årskostnad, due dates kostnad i olika valuta etc.
-
-Valutan ska ändras eftersom, då den ska gå igenom ett api call som hämtar senaste värdet av valutan.
+> **OBS:** index.html länkar till inloggning/registrering. All backend-logik ligger i `backend/` och all frontend-kod i `frontend/`.
