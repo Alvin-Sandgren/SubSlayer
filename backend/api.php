@@ -111,6 +111,37 @@ elseif ($method == 'DELETE') {
         echo json_encode(['error' => 'Hittades inte']);
     }
 }
+// UPPDATERA PRENUMERATION
+// PUT
+elseif ($method === 'PUT') {
+    $id     = (int) ($_GET['id'] ?? 0);
+    $data   = json_decode(file_get_contents("php://input"), true);
+    $amount = (float) ($data['amount']   ?? 0);
+    $cur    = strtoupper($data['currency'] ?? 'SEK');
+
+    if (!$id || !$amount) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Saknar fält']);
+        exit;
+    }
+
+    $stmt = $conn->prepare("
+        UPDATE subscriptions
+        SET amount = ?, currency = ?
+        WHERE id = ? AND user_id = ?
+    ");
+
+    $stmt->bind_param("dsii", $amount, $cur, $id, $user_id);
+
+    if ($stmt->execute() && $stmt->affected_rows > 0) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        http_response_code(404);
+        echo json_encode(['error' => 'Kunde inte uppdatera']);
+    }
+}
+
+
 //fel http metod
 else {
     http_response_code(405);
