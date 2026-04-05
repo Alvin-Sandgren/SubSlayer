@@ -1,8 +1,9 @@
+import { loadSalary } from './salary.js';
+import * as SalaryModule from './salary.js';
 import { loadCurrencies, loadRates }               from './currencies.js';
-import { fetchSubscriptions, postSubscription,
-         deleteSubscriptionById }                   from './api.js';
-import { renderSubscriptions }                      from './render.js';
-import { loadSalary, currentSalary }                from './salary.js';
+import { fetchSubscriptions, postSubscription, deleteSubscriptionById, putSubscription }  from './api.js';
+import { renderSubscriptions, renderEditCells, escapeHTML } from './render.js';
+
 
 const addForm               = document.getElementById('addSubForm');
 const subscriptionList      = document.getElementById('subscriptionList');
@@ -15,10 +16,8 @@ let subscriptions = [];
 
 // Hjälpfunktion så render alltid får rätt currentSalary
 function render() {
-    // Importerad currentSalary är en primitiv – hämta från salary-modulen varje gång
-    import('./salary.js').then(({ currentSalary }) => {
-        renderSubscriptions(subscriptions, displayCurrencySelect, subscriptionList, totalBox, totalText, currentSalary, deleteSubscription);
-    });
+    renderSubscriptions(subscriptions, displayCurrencySelect, subscriptionList, totalBox, totalText, SalaryModule.currentSalary);
+    renderNextDue();
 }
 
 async function init() {
@@ -32,8 +31,46 @@ async function init() {
     addForm.addEventListener('submit', addSubscription);
     displayCurrencySelect.addEventListener('change', render);
 
-    // Gör deleteSubscription globalt tillgänglig för onclick i tabellen
-    window.deleteSubscription = deleteSubscription;
+    subscriptionList.addEventListener('click', e => {
+        const editBtn   = e.target.closest('[data-edit]');
+        const deleteBtn = e.target.closest('[data-delete]');
+        const saveBtn   = e.target.closest('[data-save]');
+        const cancelBtn = e.target.closest('[data-cancel]');
+
+        if (editBtn)   editSubscription(+editBtn.dataset.edit, editBtn.dataset.currency);
+        if (deleteBtn) deleteSubscription(+deleteBtn.dataset.delete);
+        if (saveBtn)   saveEdit(+saveBtn.dataset.save);
+        if (cancelBtn) cancelEdit();
+    });
+}
+
+function renderNextDue() {
+    const box = document.getElementById('nextDue');
+    if (!box) return;
+
+    if (!subscriptions.length) {
+        box.innerHTML = '<p style="color:#aaa; font-size:14px;">Inga prenumerationer än.</p>';
+        return;
+    }
+
+    const next3 = subscriptions.slice(0, 4);
+
+    const items = next3.map(sub => {
+        const daysLeft = Math.ceil((new Date(sub.next_billing_date) - new Date()) / (1000 * 60 * 60 * 24));
+        return `
+            <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <p style="font-size:16px; font-weight:bold; margin:0;">${escapeHTML(sub.service_name)}</p>
+                <p style="color:#aaa; font-size:13px; margin:4px 0;">${sub.next_billing_date}</p>
+                <p style="margin:0;">${parseFloat(sub.amount).toFixed(2)} ${sub.currency}</p>
+                <p style="color:#ff00ff; font-size:13px; margin:4px 0 0 0;">${daysLeft} dagar kvar</p>
+            </div>
+        `;
+    }).join('');
+
+    box.innerHTML = `
+        <p style="color:#ff00ff; font-size:13px; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Nästa förfallodatum</p>
+        ${items}
+    `;
 }
 
 async function addSubscription(e) {
@@ -63,6 +100,37 @@ async function addSubscription(e) {
     } catch (err) {
         alert('Kunde inte spara prenumerationen');
     }
+}
+
+function editSubscription(id, currency) {
+    const sub = subscriptions.find(s => +s.id === id);
+    if (!sub) return;
+    const currencyOptions = Array.from(currencySelect.options)
+        .map(o => `<option value="${o.value}">${o.text}</option>`)
+        .join('');
+    renderEditCells(id, sub.amount, currency, currencyOptions);
+}
+
+async function saveEdit(id) {
+    const row    = document.getElementById('row-' + id);
+    const amount = parseFloat(row.cells[2].querySelector('input').value);
+    const cur    = row.cells[3].querySelector('select').value;
+
+    try {
+        const result = await putSubscription(id, { amount, currency: cur });
+        if (result.status === 'success') {
+            subscriptions = await fetchSubscriptions();
+            render();
+        } else {
+            alert(result.error || 'Kunde inte spara');
+        }
+    } catch (err) {
+        alert('Kunde inte spara ändringar');
+    }
+}
+
+function cancelEdit() {
+    render();
 }
 
 async function deleteSubscription(id) {

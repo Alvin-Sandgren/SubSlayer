@@ -7,7 +7,7 @@ export function escapeHTML(text) {
     return div.innerHTML;
 }
 
-export function renderSubscriptions(list, displayCurrencySelect, subscriptionList, totalBox, totalText, currentSalary, onDelete) {
+export function renderSubscriptions(list, displayCurrencySelect, subscriptionList, totalBox, totalText, currentSalary) {
     const displayCurrency = displayCurrencySelect.value || 'SEK';
 
     if (!list || !list.length) {
@@ -29,14 +29,17 @@ export function renderSubscriptions(list, displayCurrencySelect, subscriptionLis
             : `<span class="converted-amount">${converted.toFixed(2)} ${displayCurrency}</span>`;
 
         return `
-            <tr>
+            <tr id="row-${sub.id}">
                 <td>${escapeHTML(sub.service_name)}</td>
                 <td>${escapeHTML(sub.category || '-')}</td>
                 <td>${parseFloat(sub.amount).toFixed(2)} ${sub.currency}</td>
                 <td>${convertedCell}</td>
                 <td>${sub.period === 'monthly' ? 'Månadsvis' : 'Årsvis'}</td>
                 <td>${sub.next_billing_date}</td>
-                <td><button class="delete-btn" onclick="onDelete(${sub.id})">Ta bort</button></td>
+                <td>
+                    <button class="edit-btn"   data-edit="${sub.id}" data-currency="${sub.currency}">Redigera</button>
+                    <button class="delete-btn" data-delete="${sub.id}">Ta bort</button>
+                </td>
             </tr>
         `;
     }).join('');
@@ -54,6 +57,20 @@ export function renderSubscriptions(list, displayCurrencySelect, subscriptionLis
     totalText.textContent  = totalYearly.toFixed(2) + ' ' + displayCurrency;
     totalBox.style.display = 'block';
     renderSalaryChart(totalYearly, currentSalary);
+}
+
+export function renderEditCells(id, currentAmount, currentCurrency, currencyOptions) {
+    const row = document.getElementById('row-' + id);
+    if (!row) return;
+
+    row.cells[2].innerHTML = `<input class="edit-input" type="number" step="0.01" min="0" value="${currentAmount}" style="width:80px;">`;
+    row.cells[3].innerHTML = `<select class="edit-input">${currencyOptions}</select>`;
+    row.querySelector('select.edit-input').value = currentCurrency;
+
+    row.cells[6].innerHTML = `
+        <button class="edit-btn"   data-save="${id}">Spara</button>
+        <button class="delete-btn" data-cancel>Avbryt</button>
+    `;
 }
 
 export function renderSalaryChart(totalYearly, currentSalary) {
@@ -104,7 +121,7 @@ export function renderSalaryChart(totalYearly, currentSalary) {
             ${svg}
             <div style="text-align:left; line-height:2;">
                 <p><span style="color:#ff00ff;">■</span> Prenumerationer: <strong>${subPercent.toFixed(1)}%</strong></p>
-                <p><span style="color:#555; border:1px solid #555; display:inline-block; width:14px; height:14px; vertical-align:middle;"></span> Kvarvarande pengar efter utgifter från prenumerationer: <strong>${otherPercent.toFixed(1)}%</strong></p>
+                <p><span style="color:#555; border:1px solid #555; display:inline-block; width:14px; height:14px; vertical-align:middle;"></span> Kvarvarande efter prenumerationer: <strong>${otherPercent.toFixed(1)}%</strong></p>
                 <p style="margin-top:10px; font-size:13px; color:#999999;">
                     ${totalYearly.toFixed(0)} / ${yearSalary.toFixed(0)} SEK per år
                 </p>

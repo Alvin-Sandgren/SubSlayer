@@ -12,6 +12,19 @@ body {
     min-height: 100vh;
 }
 
+.grid-top,
+.grid-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 90%;
+    max-width: 900px;
+    margin-top: 20px;
+}
+.grid-top {
+    align-items: start;
+}
+
 /* Rubriken */
 h1 {
     color: #ffffff;
@@ -238,6 +251,24 @@ select.select-inline {
     background-color: #ff4d4d;
     color: white;
     transform: none;
+}
+
+/* --- Redigera-knapp ---*/
+.edit-btn {
+    background: transparent;
+    border: 2px solid #ff00ff;
+    color: #ff00ff;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.edit-btn:hover {
+    background-color: #ff00ff;
+    color: white;
 }
 
 /* --- TOTAL ÅRSKOSTNAD --- */
