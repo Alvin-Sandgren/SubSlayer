@@ -94,6 +94,7 @@ if (!isset($_SESSION['user_id'])) {
         <a href="logout.php">Logga ut</a>
     </div>  
 
-    <script src="../frontend/js/script.js"></script>
+    <script type="module" src="../frontend/js/main.js"></script>
+    
 </body>
 </html>
