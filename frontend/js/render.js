@@ -1,4 +1,4 @@
-import { convertCurrency } from './currencies.js';
+import { convertCurrency, getExchangeRates } from './currencies.js';
 
 export function escapeHTML(text) {
     if (text === null || text === undefined) return '';
@@ -128,4 +128,58 @@ export function renderSalaryChart(totalYearly, currentSalary) {
             </div>
         </div>
     `;
+}
+
+export function renderPieChart(subscriptions) {
+    console.log('exchangeRates:', getExchangeRates());
+    const chartBox = document.getElementById('pieChartBox');
+    if (!chartBox) return;
+
+    if (!subscriptions.length) {
+        chartBox.innerHTML = '<p style="color:#aaa;">Inga prenumerationer än.</p>';
+        return;
+    }
+
+    // Räkna ut årskostnad per tjänst i SEK
+    const data = {};
+    for (const sub of subscriptions) {
+        const yearly = sub.period === 'monthly'
+            ? convertCurrency(sub.amount, sub.currency, 'SEK') * 12
+            : convertCurrency(sub.amount, sub.currency, 'SEK');
+        data[sub.service_name] = (data[sub.service_name] || 0) + yearly;
+    }
+
+    const labels = Object.keys(data);
+    const values = Object.values(data).map(v => parseFloat(v.toFixed(2)));
+
+    chartBox.innerHTML = `
+        <h2>Kostnadsfördelning per tjänst</h2>
+        <p style="color:#aaa; font-size:13px; margin-top:-10px;">Baserat på årskostnad i SEK</p>
+        <div style="width:350px; margin:auto;">
+            <canvas id="myPieChart"></canvas>
+        </div>
+    `;
+
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels,
+            datasets: [{
+                data: values,
+                backgroundColor: ['#ff6384','#36a2eb','#ffce56','#4bc0c0','#9966ff','#ff9f40']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#ffffff' } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `${ctx.label}: ${ctx.parsed.toFixed(2)} SEK`
+                    }
+                }
+            }
+        }
+    });
 }

@@ -1,4 +1,5 @@
-export let exchangeRates = {};
+let exchangeRates = {};
+export function getExchangeRates() { return exchangeRates; }
 
 export async function loadCurrencies(currencySelect, displayCurrencySelect) {
     try {

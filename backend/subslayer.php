@@ -12,6 +12,8 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SubSlayer</title>
     <link rel="stylesheet" href="../frontend/css/style.css">
+    <script type="module" src="../frontend/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -88,7 +90,7 @@ if (!isset($_SESSION['user_id'])) {
 
         <div class="infobox">
             <h2>Kostnadsfördelning per tjänst</h2>
-            <?php include 'chart.php'; ?>
+            <div id="pieChartBox"></div>
         </div>
 
     </div>
@@ -97,8 +99,6 @@ if (!isset($_SESSION['user_id'])) {
         <a href="../index.html">Startsida</a>
         <a href="logout.php">Logga ut</a>
     </div>
-
-    <script type="module" src="../frontend/js/main.js"></script>
 
 </body>
 </html>

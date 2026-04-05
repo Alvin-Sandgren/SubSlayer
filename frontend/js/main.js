@@ -2,7 +2,7 @@ import { loadSalary } from './salary.js';
 import * as SalaryModule from './salary.js';
 import { loadCurrencies, loadRates }               from './currencies.js';
 import { fetchSubscriptions, postSubscription, deleteSubscriptionById, putSubscription }  from './api.js';
-import { renderSubscriptions, renderEditCells, escapeHTML } from './render.js';
+import { renderSubscriptions, renderEditCells, escapeHTML, renderPieChart } from './render.js';
 
 
 const addForm               = document.getElementById('addSubForm');
@@ -18,6 +18,7 @@ let subscriptions = [];
 function render() {
     renderSubscriptions(subscriptions, displayCurrencySelect, subscriptionList, totalBox, totalText, SalaryModule.currentSalary);
     renderNextDue();
+    renderPieChart(subscriptions);
 }
 
 async function init() {
