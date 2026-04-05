@@ -19,11 +19,29 @@ if (!isset($_SESSION['user_id'])) {
 
     <h1>SubSlayer</h1>
 
+    <div class="infobox" id="salaryBox">
+    <h2>Min lön</h2>
+    <div id="salaryDisplay">
+        <p id="salaryText">Laddar...</p>
+        <button id="editSalaryBtn">Redigera</button>
+    </div>
+    <div id="salaryForm" style="display:none;">
+        <label>Månadslön (SEK)</label>
+        <input type="number" id="salaryInput" min="0" step="100" placeholder="Ex. 35000">
+        <div class="auth-buttons" style="justify-content:center; margin-top:10px;">
+            <button id="saveSalaryBtn">Spara</button>
+            <button id="cancelSalaryBtn">Avbryt</button>
+            </div>
+        </div>
+    </div>
+    
+    <br><br><br>
+
     <div class="infobox">
         <h2>Lägg till prenumeration</h2>
         <form id="addSubForm">
 
-            <label>Tjänst</label>
+            <label>Typ av prenumeration</label>
             <input type="text" name="service_name" required>
 
             <label>Kategori</label>
@@ -61,6 +79,8 @@ if (!isset($_SESSION['user_id'])) {
             <p class="total-label">Årskostnad: <span id="totalCost">0</span></p>
         </div>
     </div>
+
+    <div class="infobox wide-box" id="salaryChartBox" style="display:none; margin-top:20px;"></div>
 
     <br><br><br>
 

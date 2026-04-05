@@ -60,6 +60,8 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+ALTER TABLE users ADD COLUMN monthly_salary DECIMAL(12,2) DEFAULT NULL;
+
 --
 -- Dumping data for table `users`
 --
