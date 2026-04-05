@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 11, 2026 at 07:37 AM
+-- Generation Time: Mar 25, 2026 at 07:37 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -44,7 +44,8 @@ CREATE TABLE `subscriptions` (
 --
 
 INSERT INTO `subscriptions` (`id`, `user_id`, `service_name`, `category`, `amount`, `currency`, `period`, `next_billing_date`, `created_at`) VALUES
-(3, 7, 'kalle anka', 'tidning', 5.00, 'SEK', 'monthly', '2026-04-22', '2026-03-05 09:15:40');
+(3, 7, 'kalle anka', 'tidning', 5.00, 'SEK', 'monthly', '2026-04-22', '2026-03-05 09:15:40'),
+(7, 7, 'Bamse', 'Dvd', 420.00, 'SEK', 'monthly', '2026-03-31', '2026-03-25 07:35:39');
 
 -- --------------------------------------------------------
 
@@ -58,6 +59,8 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE users ADD COLUMN monthly_salary DECIMAL(12,2) DEFAULT NULL;
 
 --
 -- Dumping data for table `users`
@@ -94,7 +97,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `subscriptions`
 --
 ALTER TABLE `subscriptions`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`

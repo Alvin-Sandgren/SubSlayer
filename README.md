@@ -3,7 +3,10 @@
 SubSlayer är en enkel PHP/JavaScript-applikation för att hantera prenumerationer. 
 Användare kan registrera sig, logga in och lägga till prenumerationer med kostnad,
 valuta, betalningsperiod och nästa förfallodatum. Systemet beräknar årskostnad
-och kan konvertera mellan valutor med hjälp av Frankfurter API.
+och kan konvertera mellan valutor med hjälp av Frankfurter API. 
+
+#Nya features
+Chartmaker: Här görs en cirkeldiagram utifrån dina aktuella prenumerationer och visar i delar vad som kostar mest, minst etc.
 
 ## Filstruktur
 

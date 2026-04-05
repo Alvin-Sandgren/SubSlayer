@@ -7,11 +7,13 @@ const currencySelect      = document.getElementById('currency');
 const displayCurrencySelect = document.getElementById('displayCurrency');
 const totalBox            = document.getElementById('totalCostBox');
 const totalText           = document.getElementById('totalCost');
+let currentSalary = null;
 
 async function init() {
   await loadCurrencies();
   await loadRates();
   await loadSubscriptions();
+  await loadSalary(); 
 
   addForm.addEventListener('submit', addSubscription);
   displayCurrencySelect.addEventListener('change', () => renderSubscriptions(subscriptions));
@@ -181,6 +183,130 @@ function escapeHTML(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+async function loadSalary() {
+    try {
+        const res  = await fetch('salary.php');
+        const data = await res.json();
+        currentSalary = data.monthly_salary ? parseFloat(data.monthly_salary) : null;
+        updateSalaryDisplay();
+    } catch (err) {
+        console.error('salary error', err);
+    }
+
+    // Koppla knappar
+    document.getElementById('editSalaryBtn').addEventListener('click', () => {
+        document.getElementById('salaryDisplay').style.display = 'none';
+        document.getElementById('salaryForm').style.display    = 'block';
+        document.getElementById('salaryInput').value = currentSalary || '';
+    });
+
+    document.getElementById('cancelSalaryBtn').addEventListener('click', () => {
+        document.getElementById('salaryForm').style.display    = 'none';
+        document.getElementById('salaryDisplay').style.display = 'block';
+    });
+
+    document.getElementById('saveSalaryBtn').addEventListener('click', saveSalary);
+}
+
+function updateSalaryDisplay() {
+    const text = document.getElementById('salaryText');
+    if (currentSalary) {
+        text.textContent = currentSalary.toLocaleString('sv-SE') + ' SEK / månad';
+    } else {
+        text.textContent = 'Ingen lön inlagd ännu.';
+    }
+}
+
+async function saveSalary() {
+    const val = parseFloat(document.getElementById('salaryInput').value);
+    if (isNaN(val) || val < 0) {
+        alert('Ange en giltig lön');
+        return;
+    }
+
+    try {
+        const res = await fetch('salary.php', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ monthly_salary: val })
+        });
+        const result = await res.json();
+
+        if (result.status === 'success') {
+            currentSalary = val;
+            updateSalaryDisplay();
+            document.getElementById('salaryForm').style.display    = 'none';
+            document.getElementById('salaryDisplay').style.display = 'block';
+            renderSubscriptions(subscriptions); // uppdatera pajdiagrammet
+        } else {
+            alert(result.error || 'Kunde inte spara');
+        }
+    } catch (err) {
+        alert('Kunde inte spara lönen');
+    }
+}
+
+function renderSalaryChart(totalYearly) {
+    const chartBox = document.getElementById('salaryChartBox');
+    if (!chartBox) return;
+
+    if (!currentSalary) {
+        chartBox.style.display = 'none';
+        return;
+    }
+
+    const yearSalary    = currentSalary * 12;
+    const subPercent    = Math.min((totalYearly / yearSalary) * 100, 100);
+    const otherPercent  = 100 - subPercent;
+
+    // SVG-pajdiagram
+    const r   = 80;
+    const cx  = 100;
+    const cy  = 100;
+
+    function polarToCartesian(angle) {
+        const rad = (angle - 90) * Math.PI / 180;
+        return {
+            x: cx + r * Math.cos(rad),
+            y: cy + r * Math.sin(rad)
+        };
+    }
+
+    function slicePath(startAngle, endAngle, color) {
+        const start   = polarToCartesian(startAngle);
+        const end     = polarToCartesian(endAngle);
+        const large   = endAngle - startAngle > 180 ? 1 : 0;
+        return `<path d="M${cx},${cy} L${start.x},${start.y} A${r},${r} 0 ${large} 1 ${end.x},${end.y} Z" fill="${color}" />`;
+    }
+
+    const subAngle = (subPercent / 100) * 360;
+
+    const svg = `
+        <svg viewBox="0 0 200 200" width="180" height="180">
+            ${subPercent >= 100
+                ? `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#ff00ff"/>`
+                : `${slicePath(0, subAngle, '#ff00ff')}
+                   ${slicePath(subAngle, 360, '#333')}`
+            }
+        </svg>
+    `;
+
+    chartBox.style.display = 'block';
+    chartBox.innerHTML = `
+        <h2>Lön vs prenumerationer</h2>
+        <div style="display:flex; align-items:center; gap:30px; justify-content:center; flex-wrap:wrap;">
+            ${svg}
+            <div style="text-align:left; line-height:2;">
+                <p><span style="color:#ff00ff;">■</span> Prenumerationer: <strong>${subPercent.toFixed(1)}%</strong></p>
+                <p><span style="color:#333; border:1px solid #555; display:inline-block; width:14px; height:14px; vertical-align:middle;"></span> Övrigt: <strong>${otherPercent.toFixed(1)}%</strong></p>
+                <p style="margin-top:10px; font-size:13px; color:#aaa;">
+                    ${totalYearly.toFixed(0)} / ${yearSalary.toFixed(0)} SEK per år
+                </p>
+            </div>
+        </div>
+    `;
 }
 
 init();
