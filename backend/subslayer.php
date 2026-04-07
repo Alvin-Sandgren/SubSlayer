@@ -89,7 +89,6 @@ if (!isset($_SESSION['user_id'])) {
         <div class="infobox" id="salaryChartBox" style="display:none;"></div>
 
         <div class="infobox">
-            <h2>Kostnadsfördelning per tjänst</h2>
             <div id="pieChartBox"></div>
         </div>
 
