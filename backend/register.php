@@ -1,34 +1,40 @@
 <?php
+// Starta sessionen så vi kan logga in användaren direkt efter registrering
 session_start();
+
 // Inkludera databasanslutningen
-require 'db.php'; 
+require 'db.php';
 
-$error = null;
+$error = null; // Används för att visa felmeddelanden i formuläret
 
+// Körs bara när formuläret skickas (POST-request)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Rensa input för säkerhets skull
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
+    // Rensa e-postadressen från ogiltiga tecken
+    $email    = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
-    // Kryptera lösenordet
+    // Hasha lösenordet med bcrypt (PASSWORD_DEFAULT) – sparas aldrig i klartext
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // SQL-fråga med mysqli (eftersom db.php använder det)
-    $sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+    // Förbered SQL-sats för att infoga ny användare
+    $sql  = "INSERT INTO users (email, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
         $stmt->bind_param("ss", $email, $hashed_password);
-        
         try {
             if ($stmt->execute()) {
+                // Registrering lyckades – logga in användaren direkt via sessionen
                 $_SESSION['user_id'] = $conn->insert_id;
-                $_SESSION['email'] = $email;
+                $_SESSION['email']   = $email;
+
+                // Skicka vidare till huvudsidan
                 header("Location: subslayer.php");
                 exit;
             }
         } catch (mysqli_sql_exception $e) {
-            // Felkod 1062 betyder "Duplicate entry" (e-posten finns redan)
+            // Felkod 1062 = "Duplicate entry" – e-posten finns redan registrerad
             if ($e->getCode() == 1062) {
                 $error = "E-postadressen är redan registrerad.";
             } else {
@@ -55,10 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="infobox">
         <h2>Registrera</h2>
 
+        <!-- Visa eventuellt felmeddelande från PHP -->
         <?php if ($error): ?>
             <p class="error-msg"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
 
+        <!-- Registreringsformulär -->
         <form method="POST" action="register.php">
             <label for="email">E-post:</label>
             <input type="email" id="email" name="email" placeholder="Din e-post..." required>
@@ -72,6 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p>Har du redan ett konto?</p>
         <a href="login.php">Logga in här</a>
     </div>
-    
+
 </body>
 </html>
