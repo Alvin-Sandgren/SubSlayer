@@ -33,7 +33,7 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Visningsläge: visar lönen och en redigera-knapp -->
             <div id="salaryDisplay">
                 <p id="salaryText">Laddar...</p>
-                <button id="editSalaryBtn">Redigera</button>
+                <button id="editSalaryBtn">Lägg till lön</button>
             </div>
 
             <!-- Redigeringsläge: formulär för att spara ny lön (dold som standard) -->

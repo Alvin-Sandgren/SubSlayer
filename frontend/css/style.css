@@ -39,6 +39,10 @@ body {
     text-align: center;
     color: #ffffff;
 }
+:hover.feature-card {
+    background-color: #35064b;
+    transform: scale(1.1);
+    }
 
 .feature-card h2 {
     color: #ff00ff;
@@ -325,5 +329,16 @@ select.select-inline {
 
 .total-label span {
     color: #ff00ff;
+    font-weight: bold;
+}
+
+#editSalaryBtn {
+    background: transparent;
+    border: 2px solid #ff00ff;
+    color: #ff00ff;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
     font-weight: bold;
 }

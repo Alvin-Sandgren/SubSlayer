@@ -68,7 +68,7 @@ function renderNextDue() {
     }
 
     // Hämta de tre/fyra närmast förfallande prenumerationerna (redan sorterade från API)
-    const next3 = subscriptions.slice(0, 4);
+    const next3 = subscriptions.slice(0, 3);
 
     const items = next3.map(sub => {
         // Räkna ut antal dagar till nästa förfallodatum
@@ -79,6 +79,7 @@ function renderNextDue() {
                 <p style="color:#aaa; font-size:13px; margin:4px 0;">${sub.next_billing_date}</p>
                 <p style="margin:0;">${parseFloat(sub.amount).toFixed(2)} ${sub.currency}</p>
                 <p style="color:#ff00ff; font-size:13px; margin:4px 0 0 0;">${daysLeft} dagar kvar</p>
+                <button data-paid="${sub.id}" style="margin-top:5px; border: 2px solid #ff00ff; border-radius: 8px; padding:5px 10px; background:#000000; color:#ff00ff; cursor:pointer;">Markera som betald</button>
             </div>
         `;
     }).join('');
