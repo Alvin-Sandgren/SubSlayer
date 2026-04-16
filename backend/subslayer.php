@@ -119,7 +119,6 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Navigationsknappar längst ner -->
     <div class="auth-buttons">
-        <a href="../index.html">Startsida</a>
         <a href="logout.php">Logga ut</a>
     </div>
 
