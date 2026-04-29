@@ -10,6 +10,7 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 / (projektets rot)
 ├── index.html              # Startsida med länkar för inloggning/registrering
 ├── README.md               # Denna fil
+│
 ├── backend/
 │   ├── db.php              # Databasanslutning (mysqli)
 │   ├── api.php             # REST-liknande API för prenumerationer (GET/POST/PUT/DELETE)
@@ -19,6 +20,7 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 │   ├── logout.php          # Avslutar sessionen och återvänder till startsidan
 │   ├── subslayer.php       # Huvudsida efter inloggning med formulär + lista
 │   └── chart.php           # Cirkeldiagram över kostnadsfördelning per tjänst
+│
 ├── frontend/
 │   ├── css/
 │   │   └── style.css       # All design och layout
@@ -28,9 +30,10 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 │       ├── currencies.js   # Valutahämtning, kurser och konvertering
 │       ├── render.js       # Renderingsfunktioner för tabell, redigering och diagram
 │       └── salary.js       # Lönehämtning, sparning och visning
+│
 └── db/
     └── subslayer.sql       # Databasschema (tabeller för users + subscriptions)
-
+    
 ## Funktionalitet
 
 1. **Autentisering**
