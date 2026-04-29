@@ -70,6 +70,10 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
    - Skapa konfigurationsfil: Gå till mappen ovanför projektets rot (t.ex C:\laragon\config.projects\) och skapa en fil med namnet conf.ini.
    - Spara uppgifter: Lägg in din host, databasnamn, användarnamn och lösenord i .ini-filen (se format i koden).
    - Justera sökvägen: Öppna backend/db.php och kontrollera att sökvägen på rad 4 pekar korrekt mot din nyskapade .ini-fil.
+  
+
+Framtidsplaner:
+
    - Klart: Du har nu en säker anslutning där känslig data är separerad från projektets logik.
    
    - Extratips, det finns ett exempel på hur en .ini fil ska se ut i detta projektets root
