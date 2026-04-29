@@ -8,16 +8,26 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 ## Filstruktur
 
 / (projektets rot)
-├── index.html              # Startsida med länkar för inloggning/registrering
-├── README.md               # Denna fil
-│
-├── backend/
-│   ├── db.php              # Databasanslutning (mysqli)
-│   ├── api.php             # REST-liknande API för prenumerationer (GET/POST/PUT/DELETE)
-│   ├── salary.php          # API för att hämta och uppdatera månadslön (GET/PUT)
-│   ├── login.php           # Inloggningsformulär och sessionhantering
-│   ├── register.php        # Registreringsformulär för nya användare
-│   ├── logout.php          # Avslutar sessionen och återvänder till startsidan
+├── index.html              # Startsida med länkar för inloggning/registrering  
+
+├── README.md               # Denna fil  
+
+│  
+
+├── backend/  
+
+│   ├── db.php              # Databasanslutning (mysqli)  
+
+│   ├── api.php             # REST-liknande API för prenumerationer (GET/POST/PUT/DELETE)  
+
+│   ├── salary.php          # API för att hämta och uppdatera månadslön (GET/PUT)  
+
+│   ├── login.php           # Inloggningsformulär och sessionhantering  
+
+│   ├── register.php        # Registreringsformulär för nya användare  
+
+│   ├── logout.php          # Avslutar sessionen och återvänder till startsidan  
+
 │   ├── subslayer.php       # Huvudsida efter inloggning med formulär + lista
 │   └── chart.php           # Cirkeldiagram över kostnadsfördelning per tjänst
 │
