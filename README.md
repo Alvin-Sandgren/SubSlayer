@@ -82,4 +82,17 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 Framtidsplaner:
 
 - Fixa till så prenumeration ger ett påminnelsemail när betalningen ska ske
-- 
+- Prenumerationens "Billing_Date" ska uppdateras när den löpt ut och mailet skickats ut om påminnelsen. Det ska vara utifrån om det är en årsprenumeration eller en månads.
+- Knappen för lön ska ändras om man redan har en så ska det stå "ändra" eller "redigera" istället för lägg till hela tiden.
+- Ska fixa till egen css nu också och försöka göra det enligt ett gränssnittsdesignsperspektiv.
+
+För nya slutprojektet i skolan: 
+
+7. Global Statistik (Publikt API)
+En endpoint backend/global-stats.php som levererar de 10 dyraste prenumerationerna i systemet.
+
+Datan är helt anonymiserad och innehåller ingen användarinformation.
+
+API:et hanterar valutakonvertering internt för att kunna jämföra priser rättvist.
+
+Detta ska visas på framsidan av subslayer som en "Wall of shame" typ till de företag som är mest pengagiriga.
