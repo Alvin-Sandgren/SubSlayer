@@ -56,7 +56,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="infobox" id="addSubBox">
             <h2>Lägg till prenumeration</h2>
             <form id="addSubForm">
-                <label>Typ av prenumeration</label>
+                <label>Prenumeration</label>
                 <input type="text" name="service_name" required>
 
                 <label>Kategori</label>
@@ -75,7 +75,7 @@ if (!isset($_SESSION['user_id'])) {
                     <option value="yearly">Årsvis</option>
                 </select>
 
-                <label>Datum</label>
+                <label>Start datum</label>
                 <input type="date" name="next_billing_date" required>
 
                 <input type="submit" value="Lägg till">
