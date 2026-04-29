@@ -28,21 +28,36 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
 
 │   ├── logout.php          # Avslutar sessionen och återvänder till startsidan  
 
-│   ├── subslayer.php       # Huvudsida efter inloggning med formulär + lista
-│   └── chart.php           # Cirkeldiagram över kostnadsfördelning per tjänst
-│
-├── frontend/
-│   ├── css/
-│   │   └── style.css       # All design och layout
-│   └── js/
-│       ├── main.js         # Init, eventlyssnare och övergripande logik
-│       ├── api.js          # Alla fetch-anrop mot backend
-│       ├── currencies.js   # Valutahämtning, kurser och konvertering
-│       ├── render.js       # Renderingsfunktioner för tabell, redigering och diagram
-│       └── salary.js       # Lönehämtning, sparning och visning
-│
-└── db/
-    └── subslayer.sql       # Databasschema (tabeller för users + subscriptions)
+│   ├── subslayer.php       # Huvudsida efter inloggning med formulär + lista  
+
+│   └── chart.php           # Cirkeldiagram över kostnadsfördelning per tjänst  
+
+│  
+
+├── frontend/  
+
+│   ├── css/  
+
+│   │   └── style.css       # All design och layout  
+
+│   └── js/  
+
+│       ├── main.js         # Init, eventlyssnare och övergripande logik  
+
+│       ├── api.js          # Alla fetch-anrop mot backend  
+
+│       ├── currencies.js   # Valutahämtning, kurser och konvertering  
+
+│       ├── render.js       # Renderingsfunktioner för tabell, redigering och diagram  
+
+│       └── salary.js       # Lönehämtning, sparning och visning  
+
+│  
+
+└── db/  
+
+    └── subslayer.sql       # Databasschema (tabeller för users + subscriptions)  
+    
     
 ## Funktionalitet
 
