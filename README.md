@@ -122,7 +122,7 @@ Framtidsplaner:
 
 [x] ~~E-postpåminnelser vid kommande betalning.~~ (Implementerat via PHPMailer & Task Scheduler)
 
-[ ] Smart uppdatering av Billing_Date: Automatisera framskjutning av datum (månad/år) efter att påminnelse skickats.
+[x] Smart uppdatering av Billing_Date: Automatisera framskjutning av datum (månad/år) efter att påminnelse skickats.
 
 [ ] Dynamisk löneknapp: Ändra knapptext till "Redigera" om data redan finns i databasen.
 
