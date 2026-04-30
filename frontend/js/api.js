@@ -53,3 +53,4 @@ export async function putSalary(salary) {
     });
     return res.json();
 }
+

@@ -105,42 +105,47 @@ if ($method == 'GET') {
 
 // PUT – Uppdatera kostnad och valuta för en prenumeration
 } elseif ($method === 'PUT') {
-
-    // Id skickas som URL-parameter
     $id   = (int) ($_GET['id'] ?? 0);
     $data = json_decode(file_get_contents("php://input"), true);
 
-    // Plocka ut nya värden för belopp och valuta
-    $amount = (float) ($data['amount']   ?? 0);
-    $cur    = strtoupper($data['currency'] ?? 'SEK');
-
-    // Kontrollera att id och belopp finns
-    if (!$id || !$amount) {
+    if (!$id) {
         http_response_code(400);
-        echo json_encode(['error' => 'Saknar fält']);
+        echo json_encode(['error' => 'Saknar ID']);
         exit;
     }
 
-    // Uppdatera prenumerationen – bara om den tillhör inloggad användare
-    $stmt = $conn->prepare("
-        UPDATE subscriptions
-        SET amount = ?, currency = ?
-        WHERE id = ? AND user_id = ?
-    ");
+    // Hämta befintlig data för att behålla värden som inte skickas med i JSON-bodyn
+    $stmtCheck = $conn->prepare("SELECT amount, currency, next_billing_date FROM subscriptions WHERE id = ? AND user_id = ?");
+    $stmtCheck->bind_param("ii", $id, $user_id);
+    $stmtCheck->execute();
+    $currentData = $stmtCheck->get_result()->fetch_assoc();
 
-    $stmt->bind_param("dsii", $amount, $cur, $id, $user_id);
-
-    if ($stmt->execute() && $stmt->affected_rows > 0) {
-        echo json_encode(['status' => 'success']);
-    } else {
+    if (!$currentData) {
         http_response_code(404);
-        echo json_encode(['error' => 'Kunde inte uppdatera']);
+        echo json_encode(['error' => 'Prenumeration hittades inte']);
+        exit;
     }
 
-// Felaktig HTTP-metod
+    // Använd nytt värde om det finns, annars behåll det gamla
+    $amount = isset($data['amount']) ? (float)$data['amount'] : (float)$currentData['amount'];
+    $cur    = isset($data['currency']) ? strtoupper($data['currency']) : $currentData['currency'];
+    $date   = isset($data['next_billing_date']) ? $data['next_billing_date'] : $currentData['next_billing_date'];
 
-} else {
-    http_response_code(405);
-    echo json_encode(['error' => 'Metod ej tillåten']);
+    // Uppdatera databasen med alla tre fält
+    $stmt = $conn->prepare("
+        UPDATE subscriptions 
+        SET amount = ?, currency = ?, next_billing_date = ? 
+        WHERE id = ? AND user_id = ?
+    ");
+    
+    // "dssii" betyder: double (amount), string (currency), string (date), integer (id), integer (user_id)
+    $stmt->bind_param("dssii", $amount, $cur, $date, $id, $user_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['error' => 'Kunde inte uppdatera databasen']);
+    }
 }
 ?>
