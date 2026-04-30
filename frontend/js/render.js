@@ -168,7 +168,6 @@ export function renderSalaryChart(totalYearly, currentSalary) {
 // Renderar pajdiagrammet med Chart.js
 // Visar kostnadsfördelning per tjänst baserat på årskostnad i SEK
 export function renderPieChart(subscriptions) {
-    console.log('exchangeRates:', getExchangeRates()); // Debug: logga kurser
     const chartBox = document.getElementById('pieChartBox');
     if (!chartBox) return;
 

@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <p>Har du redan ett konto?</p>
         <a href="login.php">Logga in här</a>
+        <a href="../index.html">Tillbaka till start</a>
     </div>
 
 </body>

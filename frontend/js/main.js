@@ -27,34 +27,40 @@ function render() {
     renderPieChart(subscriptions);
 }
 
-// init – Startar appen: laddar data och kopplar eventlyssnare
 async function init() {
-    await loadCurrencies(currencySelect, displayCurrencySelect); // Fyll valutadropdowns
-    await loadRates();                                           // Hämta aktuella valutakurser
-    await loadSalary(render);                                    // Hämta lön och koppla lön-knappar
+    await loadCurrencies(currencySelect, displayCurrencySelect);
+    await loadRates();
+    await loadSalary(render);
 
-    // Hämta och rendera prenumerationer
     subscriptions = await fetchSubscriptions();
     render();
 
-    // Eventlyssnare för att lägga till ny prenumeration
     addForm.addEventListener('submit', addSubscription);
-
-    // Re-rendera när visningsvalutan byts
     displayCurrencySelect.addEventListener('change', render);
 
-    // Delegerad eventhantering för knappar i prenumerationslistan
-    subscriptionList.addEventListener('click', e => {
-        const editBtn   = e.target.closest('[data-edit]');
-        const deleteBtn = e.target.closest('[data-delete]');
-        const saveBtn   = e.target.closest('[data-save]');
-        const cancelBtn = e.target.closest('[data-cancel]');
+    // 1. Lyssnare för den stora tabellen (Edit/Delete/Save/Cancel)
+    subscriptionList.addEventListener('click', handleListClicks);
 
-        if (editBtn)   editSubscription(+editBtn.dataset.edit, editBtn.dataset.currency);
-        if (deleteBtn) deleteSubscription(+deleteBtn.dataset.delete);
-        if (saveBtn)   saveEdit(+saveBtn.dataset.save);
-        if (cancelBtn) cancelEdit();
-    });
+    // 2. Lyssnare för löneboxen (Markera som betald)
+    const nextDueBox = document.getElementById('nextDue');
+    if (nextDueBox) {
+        nextDueBox.addEventListener('click', handleListClicks);
+    }
+}
+
+// Bryt ut logiken i en egen funktion för att slippa duplicera kod
+function handleListClicks(e) {
+    const editBtn   = e.target.closest('[data-edit]');
+    const deleteBtn = e.target.closest('[data-delete]');
+    const saveBtn   = e.target.closest('[data-save]');
+    const cancelBtn = e.target.closest('[data-cancel]');
+    const paidBtn   = e.target.closest('[data-paid]'); 
+
+    if (editBtn)   editSubscription(+editBtn.dataset.edit, editBtn.dataset.currency);
+    if (deleteBtn) deleteSubscription(+deleteBtn.dataset.delete);
+    if (saveBtn)   saveEdit(+saveBtn.dataset.save);
+    if (cancelBtn) cancelEdit();
+    if (paidBtn)   markAsPaid(+paidBtn.dataset.paid); 
 }
 
 // Visar nästa (upp till 4) förfallodatum i löneboxen
@@ -178,5 +184,111 @@ async function deleteSubscription(id) {
         alert('Kunde inte ta bort');
     }
 }
+
+async function markAsPaid(id) {
+    const sub = subscriptions.find(s => s.id == id);
+    if (!sub) return;
+
+    const today = new Date();
+    let nextDate = new Date(sub.next_billing_date);
+
+    // Spärren med snygg notis istället
+    const diffInDays = (nextDate - today) / (1000 * 60 * 60 * 24);
+    if (diffInDays > 25) {
+        showToast('Betalning redan registrerad för denna period');
+        return;
+    }
+
+    // Beräkna nästa datum
+    if (nextDate <= today) {
+        while (nextDate <= today) {
+            nextDate.setMonth(nextDate.getMonth() + 1);
+        }
+    } else {
+        nextDate.setMonth(nextDate.getMonth() + 1);
+    }
+
+    const nextDateString = nextDate.toISOString().split('T')[0];
+
+    try {
+        const result = await putSubscription(id, { 
+            next_billing_date: nextDateString 
+        });
+
+        if (result.status === 'success') {
+            subscriptions = await fetchSubscriptions();
+            render();
+            showToast(`✅ ${sub.service_name} markerad som betald!`);
+        }
+    } catch (err) {
+        showToast('❌ Gick inte att spara betalningen');
+    }
+}
+
+function showToast(message, duration = 3000) {
+    // 1. Hantera behållaren
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        // Styling för behållaren
+        Object.assign(container.style, {
+            position: 'fixed',
+            bottom: '30px',
+            right: '30px',
+            zIndex: '10000',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px'
+        });
+        document.body.appendChild(container);
+    }
+
+    // 2. Rensa tidigare notiser
+    container.innerHTML = '';
+
+    // 3. Skapa själva toasten
+    const toast = document.createElement('div');
+    toast.innerHTML = `<span>${message}</span>`;
+    
+    // Styling för själva rutan (Neon-look)
+    Object.assign(toast.style, {
+        background: 'rgba(20, 20, 20, 0.95)',
+        color: '#fff',
+        borderLeft: '5px solid #ff00ff',
+        padding: '16px 24px',
+        borderRadius: '8px',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
+        fontFamily: 'sans-serif',
+        minWidth: '280px',
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: '500',
+        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        transform: 'translateX(120%)',
+        opacity: '0',
+        backdropFilter: 'blur(5px)'
+    });
+
+    container.appendChild(toast);
+
+    // 4. Trigga "Slide in" (behöver en minimal delay för att webbläsaren ska fatta)
+    setTimeout(() => {
+        toast.style.transform = 'translateX(0)';
+        toast.style.opacity = '1';
+    }, 10);
+
+    // 5. Ta bort automatiskt
+    setTimeout(() => {
+        toast.style.transform = 'translateX(120%)';
+        toast.style.opacity = '0';
+        
+        // Ta bort elementet från DOM när animationen är klar
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, duration);
+}
+
 // Starta applikationen
 init();
