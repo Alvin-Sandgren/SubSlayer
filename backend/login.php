@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <p>Har du inget konto?</p>
         <a href="register.php">Registrera här</a>
+        <a href="../index.html">Tillbaka till start</a>
     </div>
 
 </body>
