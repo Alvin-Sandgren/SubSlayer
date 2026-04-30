@@ -39,9 +39,15 @@ export async function loadSalary(onSalaryUpdated) {
 // Kallas efter att lönen hämtats eller sparats
 export function updateSalaryDisplay() {
     const text = document.getElementById('salaryText');
-    text.textContent = currentSalary
-        ? currentSalary.toLocaleString('sv-SE') + ' SEK / månad' // Formatera med svenska tusentalsavgränsare
-        : 'Ingen lön inlagd ännu.';
+    const btn  = document.getElementById('editSalaryBtn');
+
+    if (currentSalary !== null) {
+        text.textContent = currentSalary.toLocaleString('sv-SE') + ' SEK / månad';
+        btn.textContent  = 'Redigera inkomst';
+    } else {
+        text.textContent = 'Ingen lön inlagd ännu.';
+        btn.textContent  = 'Lägg till inkomst';
+    }
 }
 
 // Sparar den inmatade lönen till servern
