@@ -1,0 +1,7 @@
+{
+    "status": "success",
+    "emails_sent": 2,
+    "errors": [],
+    "timestamp": "2026-04-30 07:05:01"
+}
+Warning: file_put_contents(C:\laragon\www\SubSlayer\backend/cron_log.txt): Failed to open stream: Resource temporarily unavailable in C:\laragon\www\SubSlayer\backend\notifier.php on line 92
