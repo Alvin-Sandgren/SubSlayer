@@ -103,20 +103,37 @@ och kan konvertera mellan valutor med hjälp av Frankfurter API.
    
    - Extratips, det finns ett exempel på hur en .ini fil ska se ut i detta projektets root
 
+7. Automatiska Påminnelser (E-post)
+För att förbättra användarupplevelsen har systemet utökats med en bakgrundstjänst som skickar påminnelser inför kommande betalningar.
+
+PHPMailer: Projektet använder det externa biblioteket PHPMailer för att skicka formaterade e-postmeddelanden. Biblioteket hanteras via Composer.
+
+Automatisering (Task Scheduler): Genom att använda Windows Schemaläggare körs backend/notifier.php helt automatiskt en gång per dygn. Detta simulerar ett "Cron-jobb" som man vanligtvis använder på en Linux-server.
+
+Loggning: Varje gång systemet kollar efter prenumerationer skrivs resultatet till backend/cron_log.txt. Loggen innehåller tidsstämpel, antal skickade mail och eventuella felmeddelanden för att underlätta felsökning.
+
+Utvecklingsmiljö: Under utveckling används Mailpit för att fånga upp alla mail lokalt, vilket gör att inga riktiga mail skickas till användarnas adresser under testfasen.
+
 > **OBS:** index.html länkar till inloggning/registrering. All backend-logik ligger i `backend/` och all frontend-kod i `frontend/`.
 
 
 
 Framtidsplaner:
 
-- Fixa till så prenumeration ger ett påminnelsemail när betalningen ska ske
-- Prenumerationens "Billing_Date" ska uppdateras när den löpt ut och mailet skickats ut om påminnelsen. Det ska vara utifrån om det är en årsprenumeration eller en månads.
-- Knappen för lön ska ändras om man redan har en så ska det stå "ändra" eller "redigera" istället för lägg till hela tiden.
-- Ska fixa till egen css nu också och försöka göra det enligt ett gränssnittsdesignsperspektiv.
+[x] ~~E-postpåminnelser vid kommande betalning.~~ (Implementerat via PHPMailer & Task Scheduler)
+
+[ ] Smart uppdatering av Billing_Date: Automatisera framskjutning av datum (månad/år) efter att påminnelse skickats.
+
+[ ] Dynamisk löneknapp: Ändra knapptext till "Redigera" om data redan finns i databasen.
+
+[ ] UI/UX Refactoring: Utveckla egen CSS med fokus på gränssnittsdesign och tillgänglighet.
+
+[ ] Wall of Shame: Färdigställa den publika statistiken för de dyraste tjänsterna.
+
 
 För nya slutprojektet i skolan: 
 
-7. Global Statistik (Publikt API)
+8. Global Statistik (Publikt API)
 En endpoint backend/global-stats.php som levererar de 10 dyraste prenumerationerna i systemet.
 
 Datan är helt anonymiserad och innehåller ingen användarinformation.
