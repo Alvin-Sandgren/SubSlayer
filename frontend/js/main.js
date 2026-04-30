@@ -25,6 +25,8 @@ function render() {
     renderSubscriptions(subscriptions, displayCurrencySelect, subscriptionList, totalBox, totalText, SalaryModule.currentSalary);
     renderNextDue();
     renderPieChart(subscriptions);
+
+    SalaryModule.updateSalaryDisplay();
 }
 
 async function init() {

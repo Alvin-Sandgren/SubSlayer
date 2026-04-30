@@ -124,11 +124,11 @@ Framtidsplaner:
 
 [x] Smart uppdatering av Billing_Date: Automatisera framskjutning av datum (månad/år) efter att påminnelse skickats.
 
-[ ] Dynamisk löneknapp: Ändra knapptext till "Redigera" om data redan finns i databasen.
-
-[ ] UI/UX Refactoring: Utveckla egen CSS med fokus på gränssnittsdesign och tillgänglighet.
+[x] Dynamisk löneknapp: Ändra knapptext till "Redigera" om data redan finns i databasen.
 
 [ ] Wall of Shame: Färdigställa den publika statistiken för de dyraste tjänsterna.
+
+[ ] UI/UX Refactoring: Utveckla egen CSS med fokus på gränssnittsdesign och tillgänglighet.
 
 
 För nya slutprojektet i skolan: 

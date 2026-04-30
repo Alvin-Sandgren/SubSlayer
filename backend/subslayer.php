@@ -23,22 +23,22 @@ if (!isset($_SESSION['user_id'])) {
 
     <h1>SubSlayer</h1>
 
-    <!-- Övre grid: lönebox till vänster, lägg till-prenumeration till höger -->
+    <!-- Övre grid: inkomstebox till vänster, lägg till-prenumeration till höger -->
     <div class="grid-top">
 
-        <!-- Lönebox: visar sparad lön och nästa förfallodatum -->
+        <!-- inkomstebox: visar sparad inkomst och nästa förfallodatum -->
         <div class="infobox" id="salaryBox">
-            <h2>Min lön</h2>
+            <h2>Min inkomst</h2>
 
-            <!-- Visningsläge: visar lönen och en redigera-knapp -->
+            <!-- Visningsläge: visar inkomst och en redigera-knapp -->
             <div id="salaryDisplay">
                 <p id="salaryText">Laddar...</p>
-                <button id="editSalaryBtn">Lägg till lön</button>
+                <button id="editSalaryBtn">Lägg till inkomst</button>
             </div>
 
-            <!-- Redigeringsläge: formulär för att spara ny lön (dold som standard) -->
+            <!-- Redigeringsläge: formulär för att spara ny inkomst (dold som standard) -->
             <div id="salaryForm" style="display:none;">
-                <label>Månadslön (SEK)</label>
+                <label>Månadsinkomst (SEK)</label>
                 <input type="number" id="salaryInput" min="0" step="100" placeholder="Ex. 35000">
                 <div class="auth-buttons" style="justify-content:center; margin-top:10px;">
                     <button id="saveSalaryBtn">Spara</button>
@@ -104,10 +104,10 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
-    <!-- Nedre grid: löne-pajdiagram till vänster, kostnadsfördelning till höger -->
+    <!-- Nedre grid: inkomste-pajdiagram till vänster, kostnadsfördelning till höger -->
     <div class="grid-bottom">
 
-        <!-- Pajdiagram: lön vs prenumerationskostnad (renderas av render.js) -->
+        <!-- Pajdiagram: inkomst vs prenumerationskostnad (renderas av render.js) -->
         <div class="infobox" id="salaryChartBox" style="display:none;"></div>
 
         <!-- Pajdiagram: kostnadsfördelning per tjänst via Chart.js -->
