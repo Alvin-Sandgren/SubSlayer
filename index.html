@@ -17,28 +17,40 @@
     </div>
 
     <div class="feature-grid">
-
-        <div class="feature-card">
-            <h2>Förfallodatum</h2>
-            <p>Se när dina nästa betalningar är och bli aldrig överraskad igen.</p>
-        </div>
-
-        <div class="feature-card">
-            <h2>Årskostnad</h2>
-            <p>Få en tydlig överblick över vad dina prenumerationer kostar per år.</p>
-        </div>
-
-        <div class="feature-card">
-            <h2>Flera valutor</h2>
-            <p>Hantera prenumerationer i valfri valuta med automatisk kursomvandling.</p>
-        </div>
-
-        <div class="feature-card">
-            <h2>Jämför mot lönen</h2>
-            <p>Se hur stor andel av din månadslön som går till prenumerationer.</p>
-        </div>
-
+    <div class="feature-card">
+        <h2>Förfallodatum</h2>
+        <p>Se när dina nästa betalningar är och bli aldrig överraskad igen.</p>
     </div>
+    <div class="feature-card">
+        <h2>Årskostnad</h2>
+        <p>Få en tydlig överblick över vad dina prenumerationer kostar per år.</p>
+    </div>
+    <div class="feature-card">
+        <h2>Flera valutor</h2>
+        <p>Hantera prenumerationer i valfri valuta med automatisk kursomvandling.</p>
+    </div>
+    <div class="feature-card">
+        <h2>Jämför mot lönen</h2>
+        <p>Se hur stor andel av din månadslön som går till prenumerationer.</p>
+    </div>
+</div>
+
+<div id="shame-root" class="shame-container">
+    <h2>Wall of Shame</h2>
+    <p class="shame-subtitle">De dyraste prenumerationer vi har skådat</p>
+    
+    <div id="wall-of-shame-list">
+        <p style="color: rgba(255,255,255,0.3);">Laddar statistik...</p>
+    </div>
+</div>
+
+<script type="module">
+    import { renderWallOfShame } from './frontend/js/render.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        renderWallOfShame();
+    });
+</script>
 
 </body>
 </html>

@@ -228,3 +228,45 @@ export function renderPieChart(subscriptions) {
         }
     });
 }
+
+export async function renderWallOfShame() {
+    const container = document.getElementById('wall-of-shame-list');
+    if (!container) {
+        console.error("Hittade inte wall-of-shame-list i DOM:en");
+        return;
+    }
+
+    try {
+        // Kontrollera att sökvägen till din PHP är rätt här!
+        const response = await fetch('backend/global-stats.php');
+        const result = await response.json();
+
+        console.log("Data mottagen från API:", result);
+
+        if (result.status === 'success' && result.data.length > 0) {
+            container.innerHTML = ''; 
+
+            result.data.forEach((item, index) => {
+                const rank = index + 1;
+                let rankDisplay = rank;
+                if (rank === 1) rankDisplay = '🥇';
+                if (rank === 2) rankDisplay = '🥈';
+                if (rank === 3) rankDisplay = '🥉';
+                
+                const row = document.createElement('div');
+                row.className = 'shame-row'; // Denna klass finns i din CSS
+                row.innerHTML = `
+                    <span class="rank">${rankDisplay}</span>
+                    <span class="service-name">${escapeHTML(item.service)}</span>
+                    <span class="price">${item.monthly_cost_sek} <small>SEK/mån</small></span>
+                `;
+                container.appendChild(row);
+            });
+        } else {
+            container.innerHTML = '<p style="color:rgba(255,255,255,0.4)">Ingen statistik tillgänglig än.</p>';
+        }
+    } catch (error) {
+        console.error("Fetch error:", error);
+        container.innerHTML = '<p>Kunde inte ansluta till databasen.</p>';
+    }
+}

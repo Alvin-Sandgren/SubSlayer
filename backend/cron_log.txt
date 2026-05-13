@@ -5,3 +5,22 @@
     "timestamp": "2026-04-30 07:05:01"
 }
 Warning: file_put_contents(C:\laragon\www\SubSlayer\backend/cron_log.txt): Failed to open stream: Resource temporarily unavailable in C:\laragon\www\SubSlayer\backend\notifier.php on line 92
+
+Fatal error: Uncaught mysqli_sql_exception: Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det in C:\laragon\www\SubSlayer\backend\db.php:19
+Stack trace:
+#0 C:\laragon\www\SubSlayer\backend\db.php(19): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'SubSlayer')
+#1 C:\laragon\www\SubSlayer\backend\notifier.php(7): require_once('C:\\laragon\\www\\...')
+#2 {main}
+  thrown in C:\laragon\www\SubSlayer\backend\db.php on line 19
+Fatal error: Uncaught mysqli_sql_exception: Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det in C:\laragon\www\SubSlayer\backend\db.php:19
+Stack trace:
+#0 C:\laragon\www\SubSlayer\backend\db.php(19): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'SubSlayer')
+#1 C:\laragon\www\SubSlayer\backend\notifier.php(7): require_once('C:\\laragon\\www\\...')
+#2 {main}
+  thrown in C:\laragon\www\SubSlayer\backend\db.php on line 19
+Fatal error: Uncaught mysqli_sql_exception: Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det in C:\laragon\www\SubSlayer\backend\db.php:19
+Stack trace:
+#0 C:\laragon\www\SubSlayer\backend\db.php(19): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'SubSlayer')
+#1 C:\laragon\www\SubSlayer\backend\notifier.php(7): require_once('C:\\laragon\\www\\...')
+#2 {main}
+  thrown in C:\laragon\www\SubSlayer\backend\db.php on line 19
